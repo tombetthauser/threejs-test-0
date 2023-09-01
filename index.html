@@ -33,18 +33,38 @@
     const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
     scene.add(roomMesh);
 
-    // Create rotating cube geometry
-    const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-    const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    scene.add(cubeMesh);
+    // Create rotating room
+    const rotatingRoomGroup = new THREE.Group();
+    scene.add(rotatingRoomGroup);
+
+    // Create walls
+    const wallGeometry = new THREE.PlaneGeometry(2, 2);
+    const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    
+    const frontWall = new THREE.Mesh(wallGeometry, wallMaterial);
+    frontWall.position.z = 1;
+    rotatingRoomGroup.add(frontWall);
+
+    const backWall = new THREE.Mesh(wallGeometry, wallMaterial);
+    backWall.position.z = -1;
+    backWall.rotation.y = Math.PI;
+    rotatingRoomGroup.add(backWall);
+
+    const leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
+    leftWall.position.x = -1;
+    leftWall.rotation.y = -Math.PI / 2;
+    rotatingRoomGroup.add(leftWall);
+
+    const rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
+    rightWall.position.x = 1;
+    rightWall.rotation.y = Math.PI / 2;
+    rotatingRoomGroup.add(rightWall);
 
     // Set up animation
     const animate = () => {
       requestAnimationFrame(animate);
 
-      cubeMesh.rotation.x += 0.01;
-      cubeMesh.rotation.y += 0.01;
+      rotatingRoomGroup.rotation.y += 0.005;
 
       renderer.render(scene, camera);
     };
